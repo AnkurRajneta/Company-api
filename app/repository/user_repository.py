@@ -22,8 +22,8 @@ class UserRepository:
         return new_user
     
 
-    async def get_user_by_username_repository(self,username:str):
-        user = select(UserModel).where(UserModel.username ==username).options(selectinload(UserModel.role),selectinload(UserModel.employees))
+    async def get_user_by_username_repository(self,email:EmailStr):
+        user = select(UserModel).where(UserModel.email ==email).options(selectinload(UserModel.role),selectinload(UserModel.employees))
         result = await self.db.execute(user)
         return result.scalars().first()
 

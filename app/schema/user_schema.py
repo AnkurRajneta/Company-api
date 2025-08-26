@@ -22,6 +22,15 @@ class UpdateUserSchema(BaseModel):
         from_attributes = True
 
 
+class EmployeeGetUserSchema(BaseModel):
+    id:int
+    username:str
+    email: EmailStr
+    password:str
+    role_id:int
+
+    class Config:
+        from_attributes = True
 class GetUserSchema(BaseModel):
     id:int
     username:str

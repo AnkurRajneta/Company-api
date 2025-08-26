@@ -21,6 +21,14 @@ class UpdateEmployeeSchema(BaseModel):
     class Config:
         from_attributes = True
 
+
+class EmployeeUserSchema(BaseModel):
+    id:int
+    name: str
+    contact_no:int
+    user_id:int
+
+
 class GetEmployeeSchema(BaseModel):
     id:int
     name: str

@@ -25,13 +25,13 @@ class EmployeeRepository:
         return new_employee
     
     async def get_all_employee_repository(self):
-        stmt = select(EmployeeModel).options(selectinload(EmployeeModel.user).selectinload(UserModel.role))
+        stmt = select(EmployeeModel)
         result = await self.db.execute(stmt)
         return result.scalars().all()
     
 
     async def get_employee_id_repository(self, id:int):
-        stmt = select(EmployeeModel).where(EmployeeModel.id ==id).options(selectinload(EmployeeModel.user).selectinload(UserModel.role))
+        stmt = select(EmployeeModel).where(EmployeeModel.id ==id)
         result = await self.db.execute(stmt)
         return result.scalars().first()
     
