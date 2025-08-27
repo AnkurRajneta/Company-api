@@ -4,8 +4,6 @@ from app.middlewares.middleware import get_current_user
 
 def require_permission(permission: Permissions):
     async def dependency(current_user = Depends(get_current_user)):
-        # Assume current_user['permissions'] is a list of permission strings
-        # If not, fetch permissions from DB based on user's role
         user_permissions = current_user.get('permissions', [])
         print(user_permissions)
         print("Checking permission:", permission.value, "in", user_permissions)

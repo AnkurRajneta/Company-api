@@ -1,7 +1,7 @@
 from pydantic import BaseModel, EmailStr
 from typing import Optional, List
 from app.schema.role_schema import GetRoleSchema
-
+from app.schema.employee_schema import EmployeeUserSchema
 
 class CreateUserSchema(BaseModel):
     username:str
@@ -26,7 +26,6 @@ class EmployeeGetUserSchema(BaseModel):
     id:int
     username:str
     email: EmailStr
-    password:str
     role_id:int
 
     class Config:
@@ -38,6 +37,7 @@ class GetUserSchema(BaseModel):
     password:str
     role_id:int
     role : Optional[GetRoleSchema] = None
+    employees:Optional[List[EmployeeUserSchema]] = None
 
     class Config:
         from_attributes = True

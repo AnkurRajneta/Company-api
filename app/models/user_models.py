@@ -18,4 +18,4 @@ class UserModel(Base):
 
       employees = relationship("EmployeeModel", back_populates="user")
      
-      user_role_assocs = relationship("UserRoleAssociation", back_populates="user")
+    

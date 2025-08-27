@@ -11,12 +11,7 @@ class RoleModel(Base):
 
     user = relationship("UserModel", back_populates="role")
 
-    role_permission_assocs = relationship("RolePermissionAssociation", back_populates="role")
     permissions = relationship(
         "PermissionModel",
-        secondary="rolepermissionassociation",
-        viewonly=True,
-        back_populates="roles"
+         back_populates="role"
     )
-
-    user_role_assocs = relationship("UserRoleAssociation", back_populates="role")  # <-- ADD THIS LINE

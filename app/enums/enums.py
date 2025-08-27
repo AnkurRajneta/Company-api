@@ -6,6 +6,7 @@ class TableName:
     EMPLOYEES = "employees"
     PERMISSIONS = "permissions"
     ROLEPERMISSIONASSOCIATION = "rolepermissionassociation"
+    USERROLEASSOCIATION = "userroleassociation"
 
 class UserRoleEnum(str,enum.Enum):
     ADMIN = "Admin"

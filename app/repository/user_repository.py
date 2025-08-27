@@ -27,7 +27,7 @@ class UserRepository:
         result = await self.db.execute(user)
         return result.scalars().first()
 
-    async def get_all_user_repository(self, response_model =List[GetUserSchema]):
+    async def get_all_user_repository(self):
         stmt = select(UserModel).options(selectinload(UserModel.role),selectinload(UserModel.employees))
         result = await self.db.execute(stmt)
         return result.scalars().all()
