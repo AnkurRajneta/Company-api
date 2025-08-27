@@ -7,25 +7,26 @@ from typing import List
 from app.middlewares.middleware import get_current_user
 from app.models.user_models import UserModel
 from app.enums.enums import UserRoleEnum
+from app.enums.enums import Permissions
 from app.middlewares.response import StandardResponse
-
+from app.utils.permissions import require_permission
 router = APIRouter()
 
 @router.post("")
-async def create_employee_controller(payload:CreateEmployeeSchema, db:AssertionError = Depends(get_db),current_user = Depends(get_current_user)):
-    
-    if current_user['role_id'] != UserRoleEnum.EMPLOYEES:
+async def create_employee_controller(
+    payload: CreateEmployeeSchema,
+    db: AsyncSession = Depends(get_db),
+    permission_check: None = Depends(require_permission(Permissions.CREATE_EMPLOYEE_CONTROLLER))
+):
+    service = EmployeeServices(db)
+    result = await service.create_employee_service(payload)
+    return {
+        "data": result,
+        "message": "Employee successfully created"
+    }
+    # else:
         
-        service = EmployeeServices(db)
-        result = await service.create_employee_service(payload)
-        return {
-            
-            "data":result,
-            "message":"Employee successfully created"
-        }
-    else:
-        
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized User")
+    #         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized User")
         
 
        
@@ -50,25 +51,32 @@ async def get_employee_by_id(id:int, db:AsyncSession = Depends(get_db)):
     }
 
 @router.put("/update/{id}")
-async def update_employees_by_id(payload:UpdateEmployeeSchema, id:int, db:AsyncSession = Depends(get_db),current_user = Depends(get_current_user)):
-    if current_user['role_id'] != UserRoleEnum.EMPLOYEES:
-        service = EmployeeServices(db)
-        result = await service.update_employee_by_id(id, payload)
-        return {
-            "data":result,
-            "message":"Updating the employee at particular id"
-        }
-    else:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized User")
+async def update_employees_by_id(
+    payload: UpdateEmployeeSchema,
+    id: int,
+    db: AsyncSession = Depends(get_db),
+    permission_check: None = Depends(require_permission(Permissions.UPDATE_EMPLOYEES_BY_ID))
+):
+    service = EmployeeServices(db)
+    result = await service.update_employee_by_id(id, payload)
+    return {
+        "data": result,
+        "message": "Updating the employee at particular id"
+    }
+    # else:
+    #     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized User")
 
 @router.delete("/delete/{id}")
-async def delete_user_by_id_controller(id:int, db:AsyncSession = Depends(get_db),current_user = Depends(get_current_user)):
-    if current_user['role_id'] != UserRoleEnum.EMPLOYEES:
-        service = EmployeeServices(db)
-        result = await service.delete_employee_by_id(id)
-        return {
-            "data":result,
-            "message":"Removing the employee with specific id"
-        }
-    else:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized User")
+async def delete_user_by_id_controller(
+    id: int,
+    db: AsyncSession = Depends(get_db),
+    permission_check: None = Depends(require_permission(Permissions.DELETE_USER_BY_ID_CONTROLLER))
+):
+    service = EmployeeServices(db)
+    result = await service.delete_employee_by_id(id)
+    return {
+        "data": result,
+        "message": "Removing the employee with specific id"
+    }
+    # else:
+    #     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized User")

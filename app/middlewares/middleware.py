@@ -35,6 +35,8 @@ async def get_current_user(
 
     user_id = payload.get("email")
     role_id = payload.get("role")
+    permissions = payload.get("permissions",[])
+
     if not user_id:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -55,4 +57,4 @@ async def get_current_user(
             detail="User not found"
         )
 
-    return {"user": user, "role_id": role_id}
+    return {"user": user, "role_id": role_id,"permissions":permissions}

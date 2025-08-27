@@ -17,6 +17,13 @@ class StandardResponse(GenericModel, Generic[T]):
 
 class CreateResponseMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
+        # Skip middleware for docs, redoc, openapi, and static files
+        if request.url.path.startswith("/docs") or \
+           request.url.path.startswith("/redoc") or \
+           request.url.path.startswith("/openapi") or \
+           request.url.path.startswith("/static"):
+            return await call_next(request)
+
         response = await call_next(request)
         try:
             body = [section async for section in response.body_iterator]
